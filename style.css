@@ -1,0 +1,76 @@
+:root {
+    --primary: #ff1453;
+    --gold: #ffd700;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { margin: 0; padding: 0; overflow: hidden; background: #000; font-family: 'Montserrat', sans-serif; color: #fff; user-select: none; }
+
+/* Принудительный горизонтальный вид */
+@media screen and (orientation: portrait) {
+    body::before {
+        content: "Пожалуйста, поверните телефон горизонтально 📱➡️";
+        position: absolute; inset: 0; background: #05050a; z-index: 99999;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; font-size: 20px; font-weight: 900; padding: 20px;
+    }
+    #vn-screen, #loading-screen, #cinematic-fade { display: none !important; }
+}
+
+/* ЭКРАН ЗАГРУЗКИ */
+#loading-screen {
+    position: fixed; inset: 0; background: #05050a; z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.8s ease;
+}
+#loading-screen.active { opacity: 1; visibility: visible; }
+.loading-title { font-family: 'Cinzel Decorative', serif; font-size: 30px; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 30px; }
+.loading-bar-container { width: 60vw; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden; box-shadow: inset 0 0 10px black; border: 1px solid rgba(255,215,0,0.3); }
+#loading-bar-fill { width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 20px var(--gold); transition: width 0.2s ease; }
+#loading-text { margin-top: 15px; font-weight: 900; font-size: 14px; letter-spacing: 2px; }
+
+/* КИНЕМАТОГРАФИЧНОЕ ЗАТЕМНЕНИЕ */
+#cinematic-fade {
+    position: fixed; inset: 0; background: #000; z-index: 5000;
+    opacity: 1; pointer-events: none; transition: opacity 0.6s ease-in-out;
+}
+#cinematic-fade.transparent { opacity: 0; }
+
+#vn-screen { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #000; }
+
+/* ФОН */
+#vn-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 1; }
+#vn-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 30%, rgba(0,0,0,0.95) 100%); }
+
+/* СПРАЙТЫ */
+#vn-sprites { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.sprite { position: absolute; bottom: -2vh; height: 90vh; object-fit: contain; filter: drop-shadow(0 15px 30px rgba(0,0,0,0.9)); transition: transform 0.2s; }
+.sprite.hidden { display: none; } /* Теперь мы их жестко скрываем, а не делаем прозрачными */
+#sprite-left { left: 5vw; }
+#sprite-center { left: 50%; transform: translateX(-50%); }
+#sprite-right { right: 5vw; }
+
+/* ИНТЕРФЕЙС (СТЕКЛО) */
+.glass-panel {
+    position: absolute; bottom: 3vh; left: 50%; transform: translateX(-50%);
+    width: 92vw; height: 30vh;
+    background: linear-gradient(135deg, rgba(15,15,25,0.75), rgba(5,5,10,0.95));
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1); border-top-color: rgba(255,215,0,0.3);
+    border-radius: 25px; padding: 25px 35px; z-index: 10;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.9), inset 0 0 30px rgba(255,255,255,0.03);
+}
+
+.glow-text { font-family: 'Cinzel Decorative', serif; font-size: 28px; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 12px; letter-spacing: 3px; text-transform: uppercase; }
+#dialog-text { font-size: 21px; line-height: 1.6; text-shadow: 0 2px 10px black; font-weight: 500; }
+#click-forward { position: absolute; inset: 0; z-index: 15; cursor: pointer; }
+
+/* КНОПКИ ВЫБОРА */
+#choices-container { position: absolute; top: -5vh; left: 50%; transform: translate(-50%, -100%); width: 75vw; display: flex; flex-direction: column; gap: 15px; z-index: 20; }
+.choice-btn {
+    background: linear-gradient(90deg, rgba(255,20,83,0.1), rgba(10,10,15,0.95), rgba(255,20,83,0.1));
+    border: 1px solid rgba(255,20,83,0.5); border-radius: 12px; padding: 18px;
+    color: #fff; font-size: 19px; font-weight: 800; text-align: center; cursor: pointer;
+    backdrop-filter: blur(15px); transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+}
+.choice-btn:hover { background: rgba(255,20,83,0.4); box-shadow: 0 0 30px rgba(255,20,83,0.7); transform: scale(1.02); }
