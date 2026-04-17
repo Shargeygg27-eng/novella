@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Montserrat:wght@500;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="main-menu" class="active">
+        <div class="menu-content">
+            <h1 class="game-title">Иллюзия Верности</h1>
+            <p class="game-version">Разработчик Sharley. Версия игры: Demo 1.0</p>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="startGame()">Начать</button>
+                <button class="menu-btn" onclick="showChaptersMenu()">Главы</button>
+            </div>
+            
+            <p class="orientation-warning">Поверните телефон в горизонтальный режим 📱➡️</p>
+        </div>
+    </div>
+
+    <div id="chapters-menu">
+        <h2 class="chapters-title">Выбор главы</h2>
+        <div class="chapters-grid" id="chapters-grid">
+            </div>
+        <button class="menu-btn close-btn" onclick="hideChaptersMenu()">Назад в меню</button>
+    </div>
+
+    <div id="loading-screen">
+        <h1 class="loading-title">Загрузка Главы...</h1>
+        <div class="loading-bar-container">
+            <div id="loading-bar-fill"></div>
+        </div>
+        <div id="loading-text">0%</div>
+    </div>
+
+    <div id="vn-screen" style="display: none;">
+        <div id="vn-bg"></div>
+        <div id="vn-sprites">
+            <img id="sprite-left" class="sprite" src="">
+            <img id="sprite-center" class="sprite" src="">
+            <img id="sprite-right" class="sprite" src="">
+        </div>
+        <div id="vn-ui" class="glass-panel">
+            <div id="speaker-name" class="glow-text"></div>
+            <div id="dialog-text"></div>
+            <div id="choices-container"></div>
+            <div id="click-forward" onclick="nextLine()"></div>
+        </div>
+    </div>
+
+    <div id="cinematic-fade"></div>
+
+    <script src="chapter_1.js"></script>
+    <script src="engine.js"></script>
+</body>
+</html>
