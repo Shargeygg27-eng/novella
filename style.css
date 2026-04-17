@@ -1,0 +1,182 @@
+/* =========================================
+   ПЕРЕМЕННЫЕ И БАЗОВЫЕ НАСТРОЙКИ
+   ========================================= */
+:root {
+    --primary: #ff1453;
+    --gold: #ffd700;
+    --bg-dark: #05050a;
+}
+
+* { 
+    box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+body { 
+    margin: 0; 
+    padding: 0; 
+    overflow: hidden; 
+    background: #000; 
+    font-family: 'Montserrat', sans-serif; 
+    color: #fff; 
+    user-select: none; 
+}
+
+/* Принудительный горизонтальный вид для мобилок */
+@media screen and (orientation: portrait) {
+    body::before {
+        content: "Пожалуйста, поверните телефон горизонтально 📱➡️";
+        position: absolute; inset: 0; background: var(--bg-dark); z-index: 99999;
+        display: flex; align-items: center; justify-content: center;
+        text-align: center; font-size: 18px; font-weight: 900; padding: 20px;
+    }
+    #vn-screen, #loading-screen, #cinematic-fade, #main-menu, #chapters-menu { 
+        display: none !important; 
+    }
+}
+
+/* =========================================
+   ЭКРАНЫ ЗАГРУЗКИ И ЭФФЕКТЫ
+   ========================================= */
+
+#loading-screen {
+    position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.8s ease;
+}
+#loading-screen.active { opacity: 1; visibility: visible; }
+
+.loading-title { font-family: 'Cinzel Decorative', serif; font-size: 24px; color: var(--gold); text-shadow: 0 0 20px var(--gold); margin-bottom: 20px; }
+
+.loading-bar-container { 
+    width: 50vw; height: 6px; background: rgba(255,255,255,0.1); 
+    border-radius: 3px; overflow: hidden; border: 1px solid rgba(255,215,0,0.2); 
+}
+#loading-bar-fill { width: 0%; height: 100%; background: var(--gold); box-shadow: 0 0 15px var(--gold); transition: width 0.2s ease; }
+#loading-text { margin-top: 10px; font-weight: 900; font-size: 12px; letter-spacing: 2px; }
+
+#cinematic-fade {
+    position: fixed; inset: 0; background: #000; z-index: 5000;
+    opacity: 1; pointer-events: none; transition: opacity 0.6s ease-in-out;
+}
+#cinematic-fade.transparent { opacity: 0; }
+
+/* =========================================
+   ИГРОВОЙ ЭКРАН (КОМПАКТНЫЙ ИНТЕРФЕЙС)
+   ========================================= */
+
+#vn-screen { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #000; }
+
+#vn-bg { position: absolute; inset: 0; background-size: cover; background-position: center; z-index: 1; }
+#vn-bg::after { 
+    content: ''; position: absolute; inset: 0; 
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.85) 100%); 
+}
+
+#vn-sprites { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.sprite { 
+    position: absolute; bottom: -2vh; height: 88vh; 
+    object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8)); 
+}
+.sprite.hidden { display: none; }
+#sprite-left { left: 3vw; }
+#sprite-center { left: 50%; transform: translateX(-50%); }
+#sprite-right { right: 3vw; }
+
+/* Компактное стеклянное окно диалога */
+.glass-panel {
+    position: absolute; bottom: 2vh; left: 50%; transform: translateX(-50%);
+    width: 88vw; 
+    min-height: 12vh; /* Узкое окно */
+    height: auto;
+    background: linear-gradient(135deg, rgba(15,15,25,0.8), rgba(5,5,10,0.96));
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1); border-top-color: rgba(255,215,0,0.3);
+    border-radius: 15px; padding: 10px 20px 12px 20px; z-index: 10;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.9), inset 0 0 20px rgba(255,255,255,0.02);
+    display: flex; flex-direction: column; justify-content: center;
+}
+
+.glow-text { 
+    font-family: 'Cinzel Decorative', serif; font-size: 16px; color: var(--gold); 
+    text-shadow: 0 0 10px var(--gold); margin-bottom: 2px; letter-spacing: 2px; text-transform: uppercase; 
+}
+
+#dialog-text { 
+    font-size: 14px; line-height: 1.35; text-shadow: 0 1px 5px black; 
+    font-weight: 500; color: #eee;
+}
+
+#click-forward { position: absolute; inset: 0; z-index: 15; cursor: pointer; }
+
+/* Компактные кнопки выбора */
+#choices-container { 
+    position: absolute; top: -1vh; left: 50%; transform: translate(-50%, -100%); 
+    width: 70vw; display: flex; flex-direction: column; gap: 6px; z-index: 20; 
+}
+.choice-btn {
+    background: linear-gradient(90deg, rgba(255,20,83,0.15), rgba(5,5,10,0.98), rgba(255,20,83,0.15));
+    border: 1px solid rgba(255,20,83,0.5); border-radius: 6px; padding: 8px 12px;
+    color: #fff; font-size: 13px; font-weight: 800; text-align: center; cursor: pointer;
+    backdrop-filter: blur(10px); transition: 0.2s;
+}
+.choice-btn:hover { background: rgba(255,20,83,0.4); box-shadow: 0 0 20px rgba(255,20,83,0.6); transform: scale(1.02); }
+
+/* =========================================
+   ГЛАВНОЕ МЕНЮ И СПИСОК ГЛАВ
+   ========================================= */
+
+#main-menu, #chapters-menu {
+    position: fixed; inset: 0; background: url('bg_room_night.webp') center/cover no-repeat;
+    z-index: 20000; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.5s ease;
+}
+
+#main-menu::before, #chapters-menu::before {
+    content: ''; position: absolute; inset: 0; 
+    background: rgba(5, 5, 10, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+
+#main-menu.active, #chapters-menu.active { opacity: 1; visibility: visible; }
+
+.menu-content { position: relative; z-index: 20001; text-align: center; }
+
+.game-title { 
+    font-family: 'Cinzel Decorative', serif; font-size: 40px; color: var(--gold); 
+    text-shadow: 0 0 25px rgba(255,215,0,0.7); margin: 0; letter-spacing: 4px; text-transform: uppercase; 
+}
+.game-version { font-size: 11px; color: #777; margin-bottom: 25px; letter-spacing: 1px; }
+
+.menu-buttons { display: flex; flex-direction: column; gap: 12px; width: 240px; margin-bottom: 25px; }
+
+.menu-btn {
+    background: linear-gradient(90deg, rgba(255,20,83,0.2), rgba(255,20,83,0.05), rgba(255,20,83,0.2));
+    border: 1px solid var(--primary); border-radius: 6px; padding: 12px;
+    color: #fff; font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; text-transform: uppercase;
+    cursor: pointer; transition: 0.3s;
+}
+.menu-btn:hover { background: rgba(255,20,83,0.5); transform: scale(1.04); }
+
+.orientation-warning { font-size: 11px; color: #555; animation: pulse 2s infinite; }
+
+/* Сетка выбора глав */
+.chapters-title { position: relative; z-index: 20001; font-family: 'Cinzel Decorative', serif; font-size: 28px; color: var(--gold); margin-bottom: 20px; }
+.chapters-grid {
+    position: relative; z-index: 20001; display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;
+    width: 80vw; max-height: 50vh; overflow-y: auto; padding: 5px; margin-bottom: 15px;
+}
+.chapters-grid::-webkit-scrollbar { width: 4px; }
+.chapters-grid::-webkit-scrollbar-thumb { background: var(--primary); }
+
+.chapter-card {
+    background: rgba(20,20,30,0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+    padding: 10px 5px; text-align: center; cursor: pointer; transition: 0.3s;
+    font-weight: 800; font-size: 13px; min-height: 60px; display: flex; flex-direction: column; justify-content: center;
+}
+.chapter-card:hover:not(.locked) { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,215,0,0.3); }
+.chapter-card.locked { opacity: 0.3; cursor: not-allowed; }
+.chapter-card .soon-text { font-size: 8px; color: var(--primary); margin-top: 2px; }
+
+.close-btn { position: relative; z-index: 20001; width: 200px; }
+
+@keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
